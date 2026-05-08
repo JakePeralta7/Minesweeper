@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minesweeper</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Minesweeper</h1>
+    <div class="header-controls">
+      <button id="btn-leaderboard" class="btn-secondary" aria-label="Open leaderboard">🏆 Leaderboard</button>
+      <button id="btn-theme" class="btn-icon" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Difficulty Selector -->
+    <div class="difficulty-selector" role="group" aria-label="Difficulty">
+      <button class="diff-btn" data-difficulty="easy">Easy</button>
+      <button class="diff-btn active" data-difficulty="medium">Medium</button>
+      <button class="diff-btn" data-difficulty="hard">Hard</button>
+    </div>
+
+    <!-- Game bar: mine counter + timer + new game button -->
+    <div class="game-bar">
+      <span class="mine-counter" id="mine-counter" aria-live="polite">💣 10</span>
+      <span class="timer" id="timer" aria-live="polite">00:00</span>
+      <button class="btn-primary" id="btn-new">New Game</button>
+    </div>
+
+    <!-- Board -->
+    <div class="board-wrapper">
+      <div id="board" class="board" role="grid" aria-label="Minesweeper board"></div>
+      <div id="board-overlay" class="board-overlay hidden">
+        <div class="overlay-content">
+          <p id="overlay-message"></p>
+          <button class="btn-primary" id="btn-overlay-new">New Game</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flag hint -->
+    <p class="flag-hint">Right-click (or long-press) to place a flag 🚩</p>
+  </main>
+
+  <!-- Leaderboard Modal -->
+  <div id="modal-leaderboard" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-title">🏆 Leaderboard</h2>
+        <button class="btn-icon modal-close" id="btn-modal-close" aria-label="Close">✕</button>
+      </div>
+      <div class="tab-bar" role="tablist">
+        <button class="tab-btn active" role="tab" data-difficulty="easy">Easy</button>
+        <button class="tab-btn" role="tab" data-difficulty="medium">Medium</button>
+        <button class="tab-btn" role="tab" data-difficulty="hard">Hard</button>
+      </div>
+      <div id="leaderboard-content" class="leaderboard-content">
+        <p class="loading">Loading…</p>
+      </div>
+    </div>
+  </div>
+  <div id="modal-backdrop" class="modal-backdrop hidden"></div>
+
+  <!-- Submit Score Modal -->
+  <div id="modal-score" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="score-modal-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="score-modal-title">🎉 You Won!</h2>
+      </div>
+      <p id="score-time-display"></p>
+      <form id="score-form" class="score-form" autocomplete="off">
+        <label for="player-name">Your name</label>
+        <input id="player-name" type="text" maxlength="32" placeholder="Enter your name" required />
+        <div class="score-form-actions">
+          <button type="submit" class="btn-primary">Submit Score</button>
+          <button type="button" class="btn-secondary" id="btn-skip-score">Skip</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

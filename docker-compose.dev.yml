@@ -1,0 +1,22 @@
+services:
+  minesweeper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - minesweeper-data:/data
+    environment:
+      - NODE_ENV=production
+      - DB_PATH=/data/leaderboard.db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/leaderboard?difficulty=easy"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  minesweeper-data:
