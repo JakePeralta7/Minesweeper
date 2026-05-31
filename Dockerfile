@@ -4,8 +4,8 @@ FROM node:22-alpine AS deps
 RUN apk add --no-cache python3 make g++
 
 WORKDIR /app/backend
-COPY backend/package*.json ./
-RUN npm install --omit=dev
+COPY backend/package.json ./
+RUN corepack enable && pnpm install --prod
 
 # ── Runtime stage ─────────────────────────────────────────────────────────────
 FROM node:22-alpine

@@ -1,0 +1,7 @@
+packages:
+  - backend
+
+allowBuilds:
+  better-sqlite3: true
+
+minimumReleaseAge: 10080
