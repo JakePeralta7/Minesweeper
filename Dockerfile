@@ -5,9 +5,11 @@ RUN apk add --no-cache python3 make g++
 
 WORKDIR /build
 COPY pnpm-workspace.yaml pnpm-lock.yaml ./
-WORKDIR /build/backend
-COPY backend/package.json ./
-RUN corepack enable && pnpm install --prod --frozen-lockfile
+COPY backend/package.json ./backend/package.json
+RUN corepack enable && pnpm install --frozen-lockfile --filter backend
+
+COPY backend/ ./backend/
+RUN pnpm --dir backend exec tsc -p tsconfig.json
 
 # ── Runtime stage ─────────────────────────────────────────────────────────────
 FROM node:22-alpine
@@ -18,8 +20,10 @@ RUN apk add --no-cache tini
 WORKDIR /app
 
 # Copy source code
-COPY backend/ ./backend/
 COPY frontend/ ./frontend/
+
+# Copy compiled backend output
+COPY --from=deps /build/backend/dist ./backend/dist
 
 # Copy pnpm virtual store used by backend/node_modules symlinks
 COPY --from=deps /build/node_modules ./node_modules
@@ -41,4 +45,4 @@ USER minesweeper
 EXPOSE 3000
 
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["node", "backend/server.js"]
+CMD ["node", "backend/dist/server.js"]
